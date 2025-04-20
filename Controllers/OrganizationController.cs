@@ -36,6 +36,7 @@ public class OrganizationController : ControllerBase
         };
 
         await _organizationService.CreateOrganizationAsync(organization);
+        _logger.LogInformation("POST/ Created organization with id: {id}.", organization.Id);
         return CreatedAtAction(nameof(GetAllOrganizations), new { id = organization.Id }, organization);
     }
 

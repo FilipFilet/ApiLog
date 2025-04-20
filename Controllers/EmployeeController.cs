@@ -22,8 +22,8 @@ public class EmployeeController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllEmployees()
     {
-        _logger.LogInformation("GET/ Fetched all employees.");
         var employees = await _employeeService.GetAllEmployeesAsync();
+        _logger.LogInformation("GET/ Fetched all employees.");
         return Ok(employees);
     }
 
@@ -39,6 +39,7 @@ public class EmployeeController : ControllerBase
         };
 
         await _employeeService.CreateEmployeeAsync(employee);
+        _logger.LogInformation("POST/ Created employee with id: {id}.", employee.Id);
         return CreatedAtAction(nameof(GetAllEmployees), new { id = employee.Id }, employee);
     }
 

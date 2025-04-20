@@ -9,30 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-// Log.Logger = new LoggerConfiguration()
-//     .ReadFrom.Configuration(builder.Configuration)
-//     .WriteTo.MSSqlServer(
-//         connectionString: builder.Configuration.GetConnectionString("DefaultConnection"),
-//         sinkOptions: new MSSqlServerSinkOptions { TableName = "LogEvents", AutoCreateSqlTable = true })
-//     .WriteTo.Console()
-//     .CreateLogger();
-
-// builder.Host.UseSerilog();
-
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-using (var connection = new SqlConnection(connectionString))
-{
-    try
-    {
-        connection.Open();
-        Console.WriteLine("Successfully connected to SQL Server.");
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Error connecting to SQL Server: {ex.Message}");
-    }
-}
-
 builder.Services.AddControllers();
 // .AddJsonOptions(options =>
 //     {
@@ -49,6 +25,7 @@ builder.Host.UseSerilog((context, lc) =>
 {
     // Read minimum level configuration from appsettings.json
     lc.ReadFrom.Configuration(context.Configuration);
+    lc.WriteTo.Console();
     lc.WriteTo.MSSqlServer(
             connectionString: context.Configuration.GetConnectionString("DefaultConnection"),
     sinkOptions: new MSSqlServerSinkOptions
